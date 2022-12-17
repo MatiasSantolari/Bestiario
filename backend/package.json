@@ -1,0 +1,23 @@
+{
+  "name": "backend-bestiario",
+  "version": "1.0.0",
+  "description": "backend de mi proyecto de bestiario",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "author": "Matias Santolari",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "http-errors": "^2.0.0",
+    "mongodb": "^4.10.0",
+    "mongoose": "^6.6.5",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
