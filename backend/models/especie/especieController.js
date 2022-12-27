@@ -36,6 +36,7 @@ router.post('/', async(req, res) => {
 });
 
 //getById
+/*
 router.get('/:id', async(req, res) => {
     try {
         const { id } = req.params;
@@ -50,6 +51,8 @@ router.get('/:id', async(req, res) => {
         Response.error(res)
     }
 });
+*/
+
 
 //update
 router.put('/:id', async(req, res) => {
@@ -70,6 +73,23 @@ router.delete('/:id', async(req, res) => {
         Response.success(res, 200, 'Especie eliminada del bestiario: ', monstruo);
     } catch (error) {
         Response.error(error);
+    }
+});
+
+//getMonstruosByEspecie
+router.get('/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        let body = await especieModel.findById(id, {"_id":0,"nombre":0,"detalle":0}).populate('monstruos');
+        let monstruos = body.monstruos
+        if(!monstruos){
+            Response.error(res,new createError.NotFound());
+        }
+        else{
+            Response.success(res, 200, `Especie: ${id} , identificada`, monstruos)
+        }
+    } catch (error) {
+        Response.error(res)
     }
 });
 
