@@ -1,5 +1,6 @@
 const express = require('express');
 const monstruoModel = require ('./monstruoModel');
+const especieModel = require ('../especie/especieModel')
 
 const { Response } = require('../../response.js');
 
@@ -11,7 +12,7 @@ const router = express.Router();
 //getAll
 router.get('/', async(req, res) => {
     try {
-        let monstruos = await monstruoModel.find()
+        let monstruos = await monstruoModel.find().populate('especie');
         Response.success(res, 200, 'Listado de monstruos', monstruos);
     } catch (error) {
         console.log(error)
@@ -67,13 +68,32 @@ router.get('/monstruoEstado/:estado', async(req, res) => {
         Response.error(res)
     }
 });
+//getByEspecie
+router.get('/monstruoByEspecie/:id_especie', async(req, res) => {
+    try {
+        const { id_especie } = req.params;
+        console.log(id_especie)
+        let docEspecie = await especieModel.findOne({ _id: id_especie });
+        console.log(docEspecie)
+        let monstruos = await monstruoModel.find({ especie: docEspecie._id });
+        console.log(monstruos)
+        if(!monstruos){
+            Response.error(res, new createError.NotFound());
+        }
+        else{
+            Response.success(res, 200, `Monstruos: `, monstruos);
+        }
+    } catch (error) {
+        Response.error(res)
+    }
+});
 
 //update
 router.put('/:id', async(req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, nivelAmenaza, estado, detalle, nombresAlternativos, urlImagen } = req.body;
-        let monstruo = await monstruoModel.updateOne({_id: id}, {$set: {nombre, nivelAmenaza, estado, detalle, nombresAlternativos, urlImagen}});
+        const { nombre, nivelAmenaza, estado, detalle, nombresAlternativos, urlImagen, especie } = req.body;
+        let monstruo = await monstruoModel.updateOne({_id: id}, {$set: {nombre, nivelAmenaza, estado, detalle, nombresAlternativos, urlImagen, especie}});
     } catch (error) {
         Response.error(error)
     }

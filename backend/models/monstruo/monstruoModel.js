@@ -24,7 +24,8 @@ const monstruoSchema = mongoose.Schema({
     urlImagen:{
         type: String,
         require: false
-    }
+    },
+    especie: { type: mongoose.Schema.Types.ObjectId, ref: 'especies', required:true}
 })
 
 module.exports = mongoose.model('monstruos',monstruoSchema);
