@@ -51,6 +51,22 @@ router.get('/:id', async(req, res) => {
         Response.error(res)
     }
 });
+//getByNombre
+router.get('/monstruoNombre/:nombre', async(req, res) => {
+    try {
+        const { nombre } = req.params;
+        let monstruos = await monstruoModel.findOne({nombre: nombre});
+
+        if(!monstruos){
+            Response.error(res, new createError.NotFound());
+        }
+        else{
+            Response.success(res, 200, `Monstruo encontrado: ${nombre}`, monstruos);
+        }
+    } catch (error) {
+        Response.error(res)
+    }
+});
 
 //getByEstado
 router.get('/monstruoEstado/:estado', async(req, res) => {
