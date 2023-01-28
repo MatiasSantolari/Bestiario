@@ -69,14 +69,11 @@ router.get('/monstruoEstado/:estado', async(req, res) => {
     }
 });
 //getByEspecie
-router.get('/monstruoByEspecie/:id_especie', async(req, res) => {
+router.get('/monstruoByEspecie/:nombre', async(req, res) => {
     try {
-        const { id_especie } = req.params;
-        console.log(id_especie)
-        let docEspecie = await especieModel.findOne({ _id: id_especie });
-        console.log(docEspecie)
+        const { nombre } = req.params;
+        let docEspecie = await especieModel.findOne({ nombre: nombre });
         let monstruos = await monstruoModel.find({ especie: docEspecie._id });
-        console.log(monstruos)
         if(!monstruos){
             Response.error(res, new createError.NotFound());
         }
